@@ -1,0 +1,103 @@
+==============================================================
+TRABALHO FINAL - SISTEMA ORIENTADO A OBJETOS
+==============================================================
+
+Nome:       Daniel Rochadel
+Tema:       Pet shop
+Linguagem:  Python 3
+
+
+--------------------------------------------------------------
+COMO EXECUTAR
+--------------------------------------------------------------
+
+1) Ter o Python 3 instalado (não usa nenhuma biblioteca externa).
+2) Abrir o terminal na pasta onde está o arquivo petshop.py.
+3) Digitar o comando:
+
+       python petshop.py
+
+   (no Linux/Mac pode ser "python3 petshop.py")
+
+O programa já começa com 5 pets cadastrados (2 cachorros e 3 gatos).
+Para sair, escolher a opção 0 no menu.
+
+
+--------------------------------------------------------------
+MAPA DOS REQUISITOS
+--------------------------------------------------------------
+Todo o código está no arquivo petshop.py.
+
+R1 - Classe abstrata
+     Classe Pet(ABC), linha 17.
+     Atributos comuns: _nome, _peso, _vacinado, _castrado.
+     Construtor __init__ na linha 18.
+     Método abstrato calcular_banho() na linha 57.
+     Método normal ficha() na linha 61, que chama calcular_banho().
+
+R2 - Herança
+     Classe Cachorro(Pet), linha 75: atributo próprio _raca,
+     chama super().__init__ na linha 78. O calcular_banho() (linha 87)
+     cobra pelo porte: até 10 kg R$ 50, até 25 kg R$ 70, acima R$ 90.
+     Classe Gato(Pet), linha 106: atributo próprio _pelagem,
+     chama super().__init__ na linha 108. O calcular_banho() (linha 116)
+     cobra pela pelagem: longa R$ 70, curta R$ 50.
+
+R3 - Encapsulamento
+     Todos os atributos são protegidos (com _ na frente).
+     Getters: get_nome, get_peso, get_vacinado, get_castrado,
+     get_raca e get_pelagem.
+     Setters com validação na classe Pet:
+       - set_nome() linha 30: não aceita nome vazio.
+       - set_peso() linha 39: não aceita peso zero ou negativo.
+     Os dois lançam ValueError, que é tratado com try/except na
+     função cadastrar() (linha 181), então o programa avisa o erro e
+     continua rodando.
+
+R4 - Interface
+     Classe Vacinavel(ABC), linha 7, só com o método abstrato
+     vacinar() (linha 9).
+     Implementada por Cachorro (vacinar na linha 95) e
+     Gato (vacinar na linha 122).
+
+R5 - Polimorfismo
+     Função acao_sistema(), linha 223.
+     Opção 1: laço for (linha 231) chama ficha() em todos os pets,
+     e cada um calcula o banho do seu jeito.
+     Opção 2: laço for (linha 236) chama vacinar() em todos, e
+     cachorro e gato respondem com mensagens diferentes.
+
+R6 - Lista de objetos
+     Lista lista_pets na linha 136, já com 5 objetos.
+     Cadastrar: função cadastrar(), linha 146.
+     Listar: função listar(), linha 185.
+     Buscar por nome: função buscar(), linha 194.
+     Remover por nome: função remover(), linha 208.
+
+R7 - Menu no terminal
+     Função menu(), linha 246, com while True na linha 247.
+     Opções 1 Cadastrar, 2 Listar, 3 Buscar, 4 Remover,
+     5 Ação do sistema e 0 Sair.
+     Opção inválida mostra mensagem (linha 272) e o menu continua.
+
+R8 - Texto do objeto
+     __str__ sobrescrito em Pet (linha 66), Cachorro (linha 102) e
+     Gato (linha 129). As filhas usam super().__str__() e acrescentam
+     a raça ou a pelagem.
+     Usado na listagem: função listar(), print(pet) na linha 191.
+
+
+--------------------------------------------------------------
+REFLEXÃO
+--------------------------------------------------------------
+
+No estilo imperativo, cada pet seria um dicionário dentro de uma lista,
+como {"nome": "Bob", "tipo": "cachorro", "peso": 18}, e eu teria funções
+soltas como calcular_banho(pet) cheias de if para ver se é cachorro ou gato.
+Toda vez que eu criasse um tipo novo de animal, teria que voltar em todas
+essas funções e acrescentar mais um if. Também não teria como impedir que
+alguém colocasse um peso negativo direto no dicionário. Usando orientação a
+objetos, cada classe tem a sua própria regra de banho, o setter impede peso
+inválido e o laço da ação do sistema funciona para qualquer tipo de pet sem
+eu precisar mudar nada nele. O código ficou mais organizado e mais fácil de
+entender e de aumentar depois.
