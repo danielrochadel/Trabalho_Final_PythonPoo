@@ -38,8 +38,8 @@ class Pet(ABC):
 
     def set_peso(self, novo_peso):
         # R3: validacao exigida no requisito
-        # se o peso for zero ou negativo, o setter recusa e lanca um erro
-        if novo_peso <= 0:
+        # se o peso nao for maior que zero (zero, negativo ou nan), o setter recusa
+        if not novo_peso > 0:
             raise ValueError("peso invalido! O peso precisa ser maior que zero.")
         self._peso = novo_peso
 
@@ -114,7 +114,7 @@ class Gato(Pet, Vacinavel):
     # R2: regra diferente para o gato
     # no gato o preco depende da pelagem (pelo longo da mais trabalho)
     def calcular_banho(self):
-        if self._pelagem.lower() == "longa":
+        if self._pelagem.strip().lower() == "longa":
             return 70.0
         return 50.0
 
@@ -193,7 +193,7 @@ def listar():
 
 def buscar():
     print("\n--- Buscar Pet ---")
-    busca = input("Digite o nome do pet: ").lower()
+    busca = input("Digite o nome do pet: ").strip().lower()
     achou = False
     for pet in lista_pets:
         if pet.get_nome().lower() == busca:
@@ -207,7 +207,7 @@ def buscar():
 
 def remover():
     print("\n--- Remover Pet ---")
-    nome_remover = input("Digite o nome para remover: ").lower()
+    nome_remover = input("Digite o nome para remover: ").strip().lower()
     achou = False
     for pet in lista_pets:
         if pet.get_nome().lower() == nome_remover:
